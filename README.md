@@ -3,15 +3,20 @@ This is just a silly repo that consists of code generators in different language
 
 # Python Version
 ```python
-def is_even(x: int) -> bool:
-    # This will print the generated code and return a function of the generated code which you can call
-    func = if_else_master_code(x, 'x', print_code=True, return_func=True)
-    return func() # Returns whether 'x' is even or not
+x = 10
+is_even(x) # This will generate the code
 
-print(is_even(10))
+# or
+x = 10
+func = is_even(x) # This will return a callable than you can call
+print(func()) # Prints 'True'
 ```
 
 # C Version
 ```c
-int is_even = printIsEven(10) // 0 = false, 1 = true
+// compile the code
+gcc c_code.c -o is_even
+
+// run the compiled code
+.\is_even 10
 ```

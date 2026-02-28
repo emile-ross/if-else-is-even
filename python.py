@@ -1,15 +1,15 @@
 from typing import Callable
 
 
-def if_else_master_code(
+def is_even(
     number: int,
-    variable_name: str | None = None,
+    variable_name: str = "x",
     *,
     print_code: bool = True,
     return_func: bool = False,
 ) -> Callable | None:
     """
-    Generates python if-else code that allows you to check if a number is even or odd.
+    Generates python if-else code that allows you to check if a number is even.
 
     Parameters
     ----------
@@ -32,39 +32,37 @@ def if_else_master_code(
         The :class:`Callable` which you can call and returns a :class:`bool` if `return_func` is set to `True`, else `None`
     """
 
-    def custom_enum(iterable, start=0):
-        count = start - 1
+    def custom_enum(iterable):
         odd = True
-        for item in iterable:
-            count += 1
+        for _ in iterable:
+            yield _, odd
             if not odd:
-                yield count, item, odd
                 odd = True
             else:
-                yield count, item, odd
                 odd = False
 
     if not print_code and not return_func:
         raise ValueError(
             "You have to either print or return a function, else it esentially does nothing."
         )
-
-    variable_name = variable_name or "x"
-    code = [
-        "def __private_is_even_or_odd_code_generator():",
-        f"  {variable_name} = {number}",
-    ]
-
-    for i, item, value in custom_enum(range(number + 1)):
-        ret = f"if {variable_name} == {i}: return {value}"
-        code.append(f"  {ret}")
     if return_func:
-        namespace = {}
-        exec("\n".join(code), namespace)
-        return namespace["__private_is_even_or_odd_code_generator"]
+        code = [
+            "def __private_is_even_code_generator():",
+            f"  {variable_name} = {number}",
+        ]
+        for i, value in custom_enum(range(number + 1)):
+            ret = f"if {variable_name} == {i}: return {value}"
+            code.append(f"  {ret}")
+    else:
+        code = [f"if {variable_name} == {i}: return {value}" for i, value in custom_enum(range(number + 1))]
+
     if print_code:
         print("\n".join(code))
 
+    if return_func:
+        namespace = {}
+        exec("\n".join(code), namespace)
+        return namespace["__private_is_even_code_generator"]
 
-x = 10
-if_else_master_code(x, "k")
+
+is_even(10, return_func=True)
