@@ -8,7 +8,7 @@ python python.py 10
 
 # Calling the 'is_even' function directly
 x = 10
-func = is_even(x) # This will return a callable than you can call
+func = is_even(x, return_func=True) # This will return a callable than you can call
 print(func()) # Call the function which prints 'True'
 ```
 
