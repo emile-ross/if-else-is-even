@@ -1,4 +1,19 @@
+import sys
 from typing import Callable
+
+
+# Simple helper function
+def _dprint(msg: str, colour: str) -> None:
+    RESET = "\033[0m"
+    colour = colour.casefold()
+    colour_mapping = {
+        "red": "\033[31m",
+        "green": "\033[32m"
+    }
+    try:
+        print(f"{colour_mapping[colour]}{msg}{RESET}")
+    except KeyError:
+        print(msg)
 
 
 def is_even(
@@ -45,6 +60,7 @@ def is_even(
         raise ValueError(
             "You have to either print or return a function, else it esentially does nothing."
         )
+
     if return_func:
         code = [
             "def __private_is_even_code_generator():",
@@ -65,4 +81,23 @@ def is_even(
         return namespace["__private_is_even_code_generator"]
 
 
-is_even(10, return_func=True)
+def main():
+    args = sys.argv
+    if len(args) < 2 or len(args) > 2:
+        _dprint(f"Expected 2 args, got {len(args)} instead", "red")
+        return
+    
+    num = args[1]
+    try:
+        num = int(num)
+    except ValueError:
+        _dprint(f"An Error Occurred: Expected an integer (5, 10, ...) got {num!r} instead. Example usage: 'python python.py 10'", "red")
+        raise
+
+    is_even(num)
+    _dprint(f"\nSuccessfully generated is-even if-else code for the number: {num}", "green")
+
+
+if __name__ == "__main__":
+    main()
+    

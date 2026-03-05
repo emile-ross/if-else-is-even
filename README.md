@@ -3,13 +3,13 @@ This is just a silly repo that consists of code generators in different language
 
 # Python Version
 ```python
-x = 10
-is_even(x) # This will generate the code
+# Through the command line
+python python.py 10
 
-# or
+# Calling the 'is_even' function directly
 x = 10
 func = is_even(x) # This will return a callable than you can call
-print(func()) # Prints 'True'
+print(func()) # Call the function which prints 'True'
 ```
 
 # C Version
