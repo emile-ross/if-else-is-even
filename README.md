@@ -3,9 +3,14 @@ This is just a silly repo that consists of code generators in different language
 
 ## Table of contents
 
+### Intepreted languages:
+
 1. [Python](#python-version)
-2. [C](#c-version)
-3. [Rust](#rust-version)
+
+### Compiled languages:
+1. [C](#c-version)
+2. [Rust](#rust-version)
+3. [Pascal](#pascal-version)
 
 ## Python Version
 
@@ -46,15 +51,11 @@ rustc rust.rs
 2. Usage:
 
 ```sh
-./rust 10
-```
-
-It will output the code into the console.
-
-Rediect it to a rust file:
-
-```sh
+# Unix
 ./rust 10 > is_even.rs
+
+# Windows
+.\rust.exe 10 > is_even.rs
 ```
 
 3. Compile that newly baked program:
@@ -66,8 +67,53 @@ rustc is_even.rs
 4. Check the result, is 10 even?:
 
 ```sh
+# Unix
 ./is_even
+
+# Windows
+.\is_even.exe
+
 # true
+```
+
+[(GO TO HOME)](#table-of-contents)
+
+## Pascal Version
+
+> I use fpc to compile. Use whatever free pascal compiler you have.
+
+1. Compile:
+
+```sh
+fpc pascal.pp
+```
+
+2. Usage:
+
+```sh
+# Unix:
+./pascal 9 > isEven.pp
+
+# Windows:
+.\pascal.exe 9 > isEven.pp
+```
+
+3. Compile the new isEven program:
+
+```sh
+fpc isEven.pp
+```
+
+4. Run it:
+
+```sh
+# Unix:
+./isEven
+
+# Windows:
+.\isEven.exe
+
+# FALSE
 ```
 
 [(GO TO HOME)](#table-of-contents)
