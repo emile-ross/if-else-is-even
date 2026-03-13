@@ -3,7 +3,7 @@ This is just a silly repo that consists of code generators in different language
 
 ## Table of contents
 
-### Intepreted languages:
+### Interpreted languages:
 
 1. [Python](#python-version)
 
