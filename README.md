@@ -43,7 +43,7 @@ gcc c_code.c -o is_even
 rustc rust.rs
 ```
 
-2.Usage:
+2. Usage:
 
 ```sh
 ./rust 10
