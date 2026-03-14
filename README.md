@@ -6,6 +6,7 @@ This is just a silly repo that consists of code generators in different language
 ### Interpreted languages:
 
 1. [Python](#python-version)
+2. [Perl](#perl-version)
 
 ### Compiled languages:
 1. [C](#c-version)
@@ -25,6 +26,35 @@ print(func()) # Call the function which prints 'True'
 ```
 
 [(GO TO HOME)](#table-of-contents)
+
+## Perl Version
+
+> Make sure you have `perl` installed.
+
+1. Run the script generator:
+
+```sh
+perl perl.pl - 5 > is_even.pl
+```
+
+> [!NOTE]
+> The `-` symbol after the script is to pass the argument to the script.
+> If you want to pass negative number. You can do something like this:
+>
+> ```sh
+> perl perl.pl - -10 > is_even.pl
+> ```
+
+2. Run the generated script:
+
+```sh
+perl is_even.pl
+# 0
+```
+
+[(GO TO HOME)](#table-of-contents)
+
+---
 
 ## C Version
 
