@@ -13,6 +13,9 @@ This is just a silly repo that consists of code generators in different language
 2. [Rust](#rust-version)
 3. [Pascal](#pascal-version)
 
+### Esoteric languages:
+1. [HTMLish](#htmlish-version)
+
 ## Python Version
 
 ### Generating the code
@@ -218,3 +221,5 @@ $ python -m htmlish htmlish.html [--code]
 **Options**:
 
 - ` --code `: Displays the Python-equivalent of the HTMLish code
+
+[(GO TO HOME)](#table-of-contents)
