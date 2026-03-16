@@ -1,21 +1,6 @@
 import sys
 from typing import Callable
 
-
-# Simple helper function
-def _dprint(msg: str, colour: str) -> None:
-    RESET = "\033[0m"
-    colour = colour.casefold()
-    colour_mapping = {
-        "red": "\033[31m",
-        "green": "\033[32m"
-    }
-    try:
-        print(f"{colour_mapping[colour]}{msg}{RESET}")
-    except KeyError:
-        print(msg)
-
-
 def is_even(
     number: int,
     variable_name: str = "x",
@@ -51,10 +36,7 @@ def is_even(
         odd = True
         for _ in iterable:
             yield _, odd
-            if not odd:
-                odd = True
-            else:
-                odd = False
+            odd = not odd
 
     if not print_code and not return_func:
         raise ValueError(
@@ -70,7 +52,9 @@ def is_even(
             ret = f"if {variable_name} == {i}: return {value}"
             code.append(f"  {ret}")
     else:
-        code = [f"if {variable_name} == {i}: return {value}" for i, value in custom_enum(range(number + 1))]
+        code = [f"{variable_name} = {number}\nis_even = False"]
+        code.extend(f"if {variable_name} == {i}: is_even = {value}" for i, value in custom_enum(range(number + 1)))
+        code.append(f"print(is_even)")
 
     if print_code:
         print("\n".join(code))
@@ -84,18 +68,17 @@ def is_even(
 def main():
     args = sys.argv
     if len(args) < 2 or len(args) > 2:
-        _dprint(f"Expected 2 args, got {len(args)} instead", "red")
+        print(f"Expected 2 args, got {len(args)} instead")
         return
     
     num = args[1]
     try:
         num = int(num)
     except ValueError:
-        _dprint(f"An Error Occurred: Expected an integer (5, 10, ...) got {num!r} instead. Example usage: 'python python.py 10'", "red")
+        print(f"An Error Occurred: Expected an integer (5, 10, ...) got {num!r} instead. Example usage: 'python python.py 10'")
         raise
 
     is_even(num)
-    _dprint(f"\nSuccessfully generated is-even if-else code for the number: {num}", "green")
 
 
 if __name__ == "__main__":

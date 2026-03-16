@@ -15,11 +15,24 @@ This is just a silly repo that consists of code generators in different language
 
 ## Python Version
 
-```python
-# Through the command line
-python python.py 10
+### Generating the code
 
-# Calling the 'is_even' function directly
+```sh
+python python.py 10
+```
+If you want to run the generated script, run these commands instead:
+- 
+    ```sh
+    python python.py 10 > is_even.py
+    ```
+-
+    ```sh
+    python is_even.py
+    ```
+
+### Running the function directly
+
+```py
 x = 10
 func = is_even(x, return_func=True) # This will return a callable than you can call
 print(func()) # Call the function which prints 'True'
@@ -58,13 +71,41 @@ perl is_even.pl
 
 ## C Version
 
-```c
-// compile the code
-gcc c_code.c -o is_even
 
-// run the compiled code
-.\is_even 10
+1. Compile:
+
+```sh
+gcc c_code.c -o c_code
 ```
+
+2. Usage:
+
+```sh
+# Unix
+./c_code 10 > is_even.c
+
+# Windows
+.\c_code.exe 10 > is_even.c
+```
+
+3. Compile that newly baked program:
+
+```sh 
+gcc is_even.c -o is_even
+```
+
+4. Check the result, is 10 even?:
+
+```sh
+# Unix
+./is_even
+
+# Windows
+.\is_even.exe
+
+# true
+```
+
 
 [(GO TO HOME)](#table-of-contents)
 
