@@ -1,0 +1,14 @@
+<head></head>
+<body>
+  <function name="is even">
+    <parameters>
+      <parameter name="number" type="integer"></parameter>
+    </parameters>
+    <callback>
+      <var name="is true" type="boolean"><ref name="number"/> % 2</var>
+      <return><ref name="is true"/></return>
+    </callback>
+  </function>
+  <call name="is even">1</call> # False
+  <print><call name="is even">2</call></print>
+</body>
