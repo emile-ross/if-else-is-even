@@ -187,3 +187,34 @@ fpc isEven.pp
 
 [(GO TO HOME)](#table-of-contents)
 
+
+## HTMLish Version
+
+### Import function
+
+```xml
+<head>
+  <import name="is even" module="if-else-is-even"/>
+</head>
+```
+
+### Usage
+
+```xml
+<body>
+  <call name="is even">1</call> # False
+  <print>
+    <call name="is even">2</call> # True
+  </print>
+</body>
+```
+
+### Execution
+
+```bash
+$ python -m htmlish htmlish.html [--code]
+```
+
+**Options**:
+
+- ` --code `: Displays the Python-equivalent of the HTMLish code
