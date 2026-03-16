@@ -18,26 +18,32 @@
  * true
  */
 
+use std::fmt::Write;
+
 fn main() {
     let arg = std::env::args().nth(1)
         .expect("Please enter a number");
     let number: i32 = arg.parse()
         .expect("Invalid number");
 
-    println!("fn main() {{");
-    println!("    let number: i32 = {};", number);
-    println!("    let mut result = false;");
+    let mut output = String::new();
+
+    output.push_str(     "fn main() {\n"                                  );
+    writeln!(output,     "    let number: i32 = {};", number              ).unwrap();
+    output.push_str(     "    let mut result = false;\n"                  );
 
     for n in 0..=number {
-        println!("    if number == {} {{", n);
-        println!("        unsafe {{");
-        println!("            let ptr: *mut bool = &mut result;");
-        println!("            *ptr = {};", if n % 2 == 0 { "true" } else { "false" });
-        println!("        }}");
-        println!("    }}");
+        writeln!(output, "    if number == {} {{", n                      ).unwrap();
+        output.push_str( "        unsafe {\n"                             );
+        output.push_str( "            let ptr: *mut bool = &mut result;\n");
+        writeln!(output, "            *ptr = {};", n % 2 == 0             ).unwrap();
+        output.push_str( "        }\n"                                    );
+        output.push_str( "    }\n"                                        );
     }
 
-    println!("    println!(\"{{}}\", result);"); 
-    println!("}}");
+    output.push_str(     "    println!(\"{}\", result);\n"                ); 
+    output.push_str(     "}\n"                                            );
+
+    println!("{}", output);
 }
 
