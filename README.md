@@ -87,6 +87,7 @@ lua lua.lua 9
 
 ```sh
 lua lua.lua 9 | lua
+# false
 ```
 
 </details>
@@ -102,6 +103,7 @@ Later on, if you forget if 9 is even or not, just run the script:
 
 ```sh
 lua is_9_even.lua
+# false
 ```
 
 </details>
