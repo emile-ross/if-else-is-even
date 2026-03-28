@@ -7,6 +7,7 @@ This is just a silly repo that consists of code generators in different language
 
 1. [Python](#python-version)
 2. [Perl](#perl-version)
+3. [Lua](#lua-version)
 
 ### Compiled languages:
 1. [C](#c-version)
@@ -65,6 +66,45 @@ perl perl.pl - 5 > is_even.pl
 perl is_even.pl
 # 0
 ```
+
+[(GO TO HOME)](#table-of-contents)
+
+## Lua Verison
+
+### Run the script generator:
+
+<details>
+<summary>Only generate the code</summary>
+
+```sh
+lua lua.lua 9
+```
+
+</details>
+
+<details>
+<summary>Redirect the output to lua to run it directly</summary>
+
+```sh
+lua lua.lua 9 | lua
+```
+
+</details>
+
+<details>
+<summary>Redirect the output to a file to run it later:</summary>
+
+```sh
+lua lua.lua 9 > is_9_even.lua
+```
+
+Later on, if you forget if 9 is even or not, just run the script:
+
+```sh
+lua is_9_even.lua
+```
+
+</details>
 
 [(GO TO HOME)](#table-of-contents)
 
@@ -190,6 +230,7 @@ fpc isEven.pp
 
 [(GO TO HOME)](#table-of-contents)
 
+---
 
 ## HTMLish Version
 
@@ -223,3 +264,4 @@ $ python -m htmlish htmlish.html [--code]
 - ` --code `: Displays the Python-equivalent of the HTMLish code
 
 [(GO TO HOME)](#table-of-contents)
+
