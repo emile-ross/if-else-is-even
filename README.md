@@ -69,7 +69,7 @@ perl is_even.pl
 
 [(GO TO HOME)](#table-of-contents)
 
-## Lua Verison
+## Lua Version
 
 ### Run the script generator:
 
