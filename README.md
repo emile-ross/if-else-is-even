@@ -8,6 +8,7 @@ This is just a silly repo that consists of code generators in different language
 1. [Python](#python-version)
 2. [Perl](#perl-version)
 3. [Lua](#lua-version)
+4. [TypeScript](#typescript-version)
 
 ### Compiled languages:
 1. [C](#c-version)
@@ -264,6 +265,45 @@ $ python -m htmlish htmlish.html [--code]
 **Options**:
 
 - ` --code `: Displays the Python-equivalent of the HTMLish code
+
+[(GO TO HOME)](#table-of-contents)
+
+---
+
+## TypeScript Version
+
+### Import
+
+Copy **typescript.ts** into your repository and import it directly. In this example, we have name the file "ifElseIsEven.ts":
+
+```ts
+import { evaluate } from "ifElseIsEven.ts";
+```
+
+### Usage
+
+```ts
+/**
+ * @example
+ *
+ * import { evaluate } from "ifElseIsEvent.ts";
+ *
+ * function fn() {
+ *     const parityOf3 = evaluate(3); // "Odd"
+ *     const parityOf8 = evaluate(8); // "Even"
+ *     const output = `3 is ${parityOf3} and 8 is ${parityOf8}`;
+ *     console.log(output); // Prints "3 is Odd and 8 is Even"
+ * }
+```
+
+### Notes
+> [!CAUTION]
+> Calling `evaluate` for numbers with an absolute value > 100,000,000 will likely take at least 10 seconds to process and consume a **very high amount of RAM** (estimated between 40 and 80 bytes per number). The program is structured in a way that does not overflow the stack; it will continue running until it has exhausted your system's memory and may cause your runtime or operating system to crash.
+
+- Supports negative inputs
+- Does not support `Infinity` or `-Infinity` (an error message will display)
+- Does not support `NaN` (an error message will display)
+- The return type of `evaluate` is a string literal - "Even" or "Odd"
 
 [(GO TO HOME)](#table-of-contents)
 
