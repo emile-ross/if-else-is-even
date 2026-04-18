@@ -1,12 +1,12 @@
 const EVEN = Symbol("even");
 const ODD  = Symbol("odd");
 
-const Parity = {
+export const Parity = {
     Even: EVEN,
     Odd:  ODD
 } as const;
 
-type Parity = typeof Parity[keyof typeof Parity];
+export type Parity = typeof Parity[keyof typeof Parity];
 
 function* isEvenElseIsOddGenerator() {
     let i = 0;
@@ -25,7 +25,7 @@ function* isEvenElseIsOddGenerator() {
     }
 }
 
-const evaluate = (x: number) => {
+export const evaluate = (x: number) => {
 
     if (Number.isNaN(x) ||
         x === Infinity ||
@@ -73,7 +73,7 @@ const evaluate = (x: number) => {
 }
 
 /* Examples and tests */
-(() => {
+const test = () => {
     evaluate(1);
     evaluate(100);
     evaluate(99999999);
@@ -83,4 +83,4 @@ const evaluate = (x: number) => {
     evaluate(NaN);
     evaluate(Infinity);
     evaluate(-Infinity);
-})();
+};
