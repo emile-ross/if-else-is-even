@@ -283,17 +283,14 @@ import { evaluate } from "ifElseIsEven.ts";
 ### Usage
 
 ```ts
-/**
- * @example
- *
- * import { evaluate } from "ifElseIsEvent.ts";
- *
- * function fn() {
- *     const parityOf3 = evaluate(3); // "Odd"
- *     const parityOf8 = evaluate(8); // "Even"
- *     const output = `3 is ${parityOf3} and 8 is ${parityOf8}`;
- *     console.log(output); // Prints "3 is Odd and 8 is Even"
- * }
+import { evaluate } from "ifElseIsEvent.ts";
+ 
+function fn() {
+    const parityOf3 = evaluate(3); // "Odd"
+    const parityOf8 = evaluate(8); // "Even"
+    const output = `3 is ${parityOf3} and 8 is ${parityOf8}`;
+    console.log(output); // Prints "3 is Odd and 8 is Even"
+}
 ```
 
 ### Notes
@@ -306,4 +303,3 @@ import { evaluate } from "ifElseIsEven.ts";
 - The return type of `evaluate` is a string literal - "Even" or "Odd"
 
 [(GO TO HOME)](#table-of-contents)
-
