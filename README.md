@@ -14,6 +14,7 @@ This is just a silly repo that consists of code generators in different language
 1. [C](#c-version)
 2. [Rust](#rust-version)
 3. [Pascal](#pascal-version)
+4. [Standard ML](#sml-version)
 
 ### Esoteric languages:
 1. [HTMLish](#htmlish-version)
@@ -235,6 +236,33 @@ fpc isEven.pp
 
 ---
 
+## Standard ML Version
+
+> Tested with both SML/NJ and MLTon, I will use MLTon for the sake of standalone binaries
+
+1. Compile the generator
+
+```sh
+mlton sml.sml
+```
+
+2. Generate the "if even program"
+
+```sh
+./sml 100 > out.sml
+```
+
+3. Compile and run
+```sh
+mlton out.sml && ./out
+```
+
+Good luck have fun
+
+
+[(GO TO HOME)](#table-of-contents)
+
+---
 ## HTMLish Version
 
 ### Import function
