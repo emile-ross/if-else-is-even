@@ -3,11 +3,11 @@ from collections.abc import Callable, Iterator
 
 def is_even(
     number: int,
-    variable_name: str = "x",
+    variable_name: str | None = "x",
     *,
     print_code: bool = True,
     return_func: bool = False,
-) -> Callable | None:
+) -> Callable[[], bool] | None:
     """
     Generates python if-else code that allows you to check if a number is even.
 
@@ -25,35 +25,42 @@ def is_even(
     Raises
     -------
     ValueError
-        When both `print_code` and `return_func` is set to `False` as the function would esentially do nothing.
+        When both `print_code` and `return_func` are set to `False` as the function would essentially do nothing.
 
     Returns
     --------
         The :class:`Callable` which you can call and returns a :class:`bool` if `return_func` is set to `True`, else `None`
     """
 
-    def custom_enum(iterable):
-        odd = True
-        for _ in iterable:
-            yield _, odd
-            odd = not odd
+    def custom_enum(number: int) -> Iterator[tuple[int, bool]]:
+        start = number if number < 0 else 0
+        stop = 1 if number < 0 else number + 1
+        is_even_value = start % 2 == 0
+
+        for value in range(start, stop):
+            yield value, is_even_value
+            is_even_value = not is_even_value
+
+    target_variable = "x" if variable_name is None else variable_name
 
     if not print_code and not return_func:
         raise ValueError(
-            "You have to either print or return a function, else it esentially does nothing."
+            "You have to either print or return a function, else it essentially does nothing."
         )
 
     if return_func:
         code = [
             "def __private_is_even_code_generator():",
-            f"  {variable_name} = {number}",
+            f"  {target_variable} = {number}",
         ]
-        for i, value in custom_enum(range(number + 1)):
-            ret = f"if {variable_name} == {i}: return {value}"
-            code.append(f"  {ret}")
+        for value, is_even_value in custom_enum(number):
+            code.append(f"  if {target_variable} == {value}: return {is_even_value}")
     else:
-        code = [f"{variable_name} = {number}\nis_even = False"]
-        code.extend(f"if {variable_name} == {i}: is_even = {value}" for i, value in custom_enum(range(number + 1)))
+        code = [f"{target_variable} = {number}\nis_even = False"]
+        code.extend(
+            f"if {target_variable} == {value}: is_even = {is_even_value}"
+            for value, is_even_value in custom_enum(number)
+        )
         code.append(f"print(is_even)")
 
     if print_code:
