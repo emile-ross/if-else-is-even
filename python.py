@@ -1,6 +1,12 @@
 import sys
 from collections.abc import Callable, Iterator
 
+from argparse import ArgumentParser
+parser = ArgumentParser()
+parser.add_argument("-dpc", "--dont-print-code", action="store_true", help="Disables printing the generated code. Code prints unless this flag is provided.")
+parser.add_argument("-rf", "--return-function", action="store_true", help="Returns a function of the generated code instead of printing it. If -dpc is present, a function will always be returned regardless of this flag's state.")
+parser.add_argument("-n", "--numbers", nargs="+", type=int, help="The number(s) to check.")
+
 def is_even(
     number: int,
     variable_name: str | None = "x",
@@ -44,9 +50,7 @@ def is_even(
     target_variable = "x" if variable_name is None else variable_name
 
     if not print_code and not return_func:
-        raise ValueError(
-            "You have to either print or return a function, else it essentially does nothing."
-        )
+        return_func = True
 
     if return_func:
         code = [
@@ -73,19 +77,19 @@ def is_even(
 
 
 def main():
-    args = sys.argv
-    if len(args) != 2:
-        print(f"Expected 2 args, got {len(args)} instead")
+    args = parser.parse_args()
+    if not args.numbers:
+        print(f"Expected at least one number, got {len(args.numbers)} instead")
         return
-    
-    num = args[1]
-    try:
-        num = int(num)
-    except ValueError:
-        print(f"An Error Occurred: Expected an integer (5, 10, ...) got {num!r} instead. Example usage: 'python python.py 10'")
-        raise
 
-    is_even(num)
+    for raw_number in args.numbers:
+        try:
+            number = int(raw_number)
+        except ValueError:
+            print(f"An Error Occurred: Expected an integer (5, 10, ...) got {raw_number!r} instead. Example usage: 'python python.py 10 35 812340'")
+            raise
+
+        is_even(number, print_code=(not args.dont_print_code), return_func=args.return_function)
 
 
 if __name__ == "__main__":
