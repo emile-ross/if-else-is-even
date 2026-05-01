@@ -67,7 +67,7 @@ def is_even(
 
 def main():
     args = sys.argv
-    if len(args) < 2 or len(args) > 2:
+    if len(args) != 2:
         print(f"Expected 2 args, got {len(args)} instead")
         return
     
