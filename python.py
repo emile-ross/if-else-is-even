@@ -1,5 +1,5 @@
 import sys
-from typing import Callable
+from collections.abc import Callable, Iterator
 
 def is_even(
     number: int,
