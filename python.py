@@ -1,28 +1,8 @@
-from collections.abc import Callable
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from collections.abc import Callable
 
 from argparse import ArgumentParser
-
-parser = ArgumentParser()
-parser.add_argument(
-    "-pc",
-    "--print-code",
-    action="store_true",
-    help="Print the generated code; disabled by default.",
-)
-parser.add_argument(
-    "-rf",
-    "--return-function",
-    action="store_true",
-    help="Return a callable which performs the parity check instead of printing code.",
-)
-parser.add_argument(
-    "-n",
-    "--numbers",
-    nargs="+",
-    type=int,
-    required=True,
-    help="One or more numbers to check.",
-)
 
 def is_even(
     number: int,
@@ -55,73 +35,57 @@ def is_even(
         The :class:`Callable` which you can call and returns a :class:`bool` if `return_func` is set to `True`, else `None`
     """
 
-    def custom_enum(number: int):
-        if number >= 0:
-            candidates = []
-            i = 0
-            while i <= number:
-                candidates = candidates + [i]
-                i += 1
-            for c in candidates:
-                parity = False
-                j = abs(c)
-                while j:
-                    parity = not parity
-                    j -= 1
-                yield c, parity
+    def _enumerate_odd_even(number: int):
+        start = 0
+        if number < 0:
+            stop = number - 1
+            step = -1
         else:
-            candidates = []
-            i = number
-            while i < 1:
-                candidates = candidates + [i]
-                i += 1
-            for c in candidates:
-                parity = False
-                j = abs(c)
-                while j:
-                    parity = not parity
-                    j -= 1
-                yield c, parity
+            stop = number + 1
+            step = 1
+
+        is_even_value: bool = True
+
+        for value in range(start, stop, step):
+            yield value, is_even_value
+            is_even_value = not is_even_value
 
     if not print_code and not return_func:
-        raise ValueError("You must either print the generated code or return a function (set `print_code` with `-pc`/`--print-code` or `return_func` with `-rf`/`--return-function`z    ).")
+        raise ValueError("You must either print the generated code or return a function.")
 
     if return_func:
-        code_str = ""
-        code_str += "def __private_is_even_code_generator():\n"
-        code_str += f"  {variable_name} = {number}\n"
-        for candidate, is_even_flag in custom_enum(number):
-            code_str = code_str + (f"  if {variable_name} == {candidate}: return {is_even_flag}\n")
-        namespace = {}
-        exec(code_str, namespace)
-        exec(code_str, namespace)
-        return namespace["__private_is_even_code_generator"]
+        code = [
+            "def __private_is_even_code_generator():",
+            f"  {variable_name} = {number}",
+        ]
+        for i, value in _enumerate_odd_even(number):
+            code.append(f"  if {variable_name} == {i}: return {value}")
     else:
-        code_str = ""
-        code_str += f"{variable_name} = {number}\n"
-        code_str += "is_even = False\n"
-        for candidate, is_even_flag in custom_enum(number):
-            code_str = code_str + (f"if {variable_name} == {candidate}: is_even = {is_even_flag}\n")
-        code_str = code_str + "print(is_even)\n"
+        code = [f"{variable_name} = {number}\nis_even = False"]
+        code.extend(f"if {variable_name} == {i}: is_even = {value}" for i, value in _enumerate_odd_even(number))
+        code.append(f"print(is_even)\n\n")
 
     if print_code:
-        print("\n".join(code_str.splitlines()))
+        print("\n".join(code))
 
     if return_func:
         namespace = {}
-        exec("\n".join(code_str.splitlines()), namespace)
+        exec("\n".join(code), namespace)
         return namespace["__private_is_even_code_generator"]
 
 
 def main():
+    parser = ArgumentParser()
+    parser.add_argument(
+        "numbers",
+        nargs="+",
+        type=int,
+        help="One or more numbers to check.",
+    )
     args = parser.parse_args()
-
     for number in args.numbers:
-        s = str(number)
-        n = int(s)
-        is_even(n, print_code=(not args.dont_print_code), return_func=args.return_function)
+        is_even(number)
 
 
 if __name__ == "__main__":
     main()
-    
