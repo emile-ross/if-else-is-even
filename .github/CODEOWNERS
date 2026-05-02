@@ -1,3 +1,9 @@
+# This does not imply ownership of any file, but rather 
+# those listed are usually the ones who created the file
+# or often contributes to it.
+# They will automatically be added as reviewers to PRs that change
+# the files they 'own'.
+
 c_code.c        @Sacul0457
 cpp_code.cpp    @maukkis
 cobol.cob       @maukkis
