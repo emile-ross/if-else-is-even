@@ -4,10 +4,10 @@ from argparse import ArgumentParser
 
 parser = ArgumentParser()
 parser.add_argument(
-    "-dpc",
-    "--dont-print-code",
+    "-pc",
+    "--print-code",
     action="store_true",
-    help="Disable printing the generated code; print by default.",
+    help="Print the generated code; disabled by default.",
 )
 parser.add_argument(
     "-rf",
