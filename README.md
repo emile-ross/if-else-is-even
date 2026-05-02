@@ -26,24 +26,7 @@ This is just a silly repo that consists of code generators in different language
 ```sh
 python python.py 10
 ```
-You can now pass one or more numbers and control output with flags:
 
-- `-n, --numbers`: one or more numbers to check (required)
-- `-dpc, --dont-print-code`: do not print the generated code
-- `-rf, --return-function`: return a callable that performs the parity check
-
-Examples:
-
-```sh
-# Print code for 10
-python python.py -n 10
-
-# Return a function instead of printing code
-python python.py -n 10 -rf
-
-# Check several numbers and do not print generated code
-python python.py -n 5 10 13 -dpc
-```
 If you want to run the generated script, run these commands instead:
 - ```sh
   python python.py 10 > is_even.py
