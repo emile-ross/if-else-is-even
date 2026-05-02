@@ -1,6 +1,2 @@
 *.exe
 a.out
-
-
-__pycache__/
-*.py[cod]

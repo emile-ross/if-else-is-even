@@ -1,14 +1,32 @@
-from collections.abc import Callable, Iterator
+from collections.abc import Callable
 
 from argparse import ArgumentParser
+
 parser = ArgumentParser()
-parser.add_argument("-dpc", "--dont-print-code", action="store_true", help="Disables printing the generated code. Code prints unless this flag is provided.")
-parser.add_argument("-rf", "--return-function", action="store_true", help="Returns a function of the generated code instead of printing it. If -dpc is present, a function will always be returned regardless of this flag's state.")
-parser.add_argument("-n", "--numbers", nargs="+", type=int, help="The number(s) to check.")
+parser.add_argument(
+    "-dpc",
+    "--dont-print-code",
+    action="store_true",
+    help="Disable printing the generated code; print by default.",
+)
+parser.add_argument(
+    "-rf",
+    "--return-function",
+    action="store_true",
+    help="Return a callable which performs the parity check instead of printing code.",
+)
+parser.add_argument(
+    "-n",
+    "--numbers",
+    nargs="+",
+    type=int,
+    required=True,
+    help="One or more numbers to check.",
+)
 
 def is_even(
     number: int,
-    variable_name: str | None = "x",
+    variable_name: str = "x",
     *,
     print_code: bool = True,
     return_func: bool = False,
@@ -37,34 +55,31 @@ def is_even(
         The :class:`Callable` which you can call and returns a :class:`bool` if `return_func` is set to `True`, else `None`
     """
 
-    def custom_enum(number: int) -> Iterator[tuple[int, bool]]:
-        start = number if number < 0 else 0
-        stop = 1 if number < 0 else number + 1
-        is_even_value = start % 2 == 0
-
-        for value in range(start, stop):
-            yield value, is_even_value
-            is_even_value = not is_even_value
-
-    target_variable = "x" if variable_name is None else variable_name
+    def custom_enum(number: int):
+        # Simple, readable generation of (candidate, is_even) pairs.
+        if number >= 0:
+            for candidate in range(0, number + 1):
+                yield candidate, (candidate % 2 == 0)
+        else:
+            for candidate in range(number, 1):
+                yield candidate, (candidate % 2 == 0)
 
     if not print_code and not return_func:
-        return_func = True
+        raise ValueError(
+            "You must either print the generated code or return a function (set `print_code` or `return_func`)."
+        )
 
     if return_func:
-        code = [
-            "def __private_is_even_code_generator():",
-            f"  {target_variable} = {number}",
-        ]
-        for value, is_even_value in custom_enum(number):
-            code.append(f"  if {target_variable} == {value}: return {is_even_value}")
+        code = ["def __private_is_even_code_generator():", f"  {variable_name} = {number}"]
+        for candidate, is_even_flag in custom_enum(number):
+            code.append(f"  if {variable_name} == {candidate}: return {is_even_flag}")
     else:
-        code = [f"{target_variable} = {number}\nis_even = False"]
+        code = [f"{variable_name} = {number}\nis_even = False"]
         code.extend(
-            f"if {target_variable} == {value}: is_even = {is_even_value}"
-            for value, is_even_value in custom_enum(number)
+            f"if {variable_name} == {candidate}: is_even = {is_even_flag}"
+            for candidate, is_even_flag in custom_enum(number)
         )
-        code.append(f"print(is_even)")
+        code.append("print(is_even)")
 
     if print_code:
         print("\n".join(code))
@@ -77,17 +92,8 @@ def is_even(
 
 def main():
     args = parser.parse_args()
-    if not args.numbers:
-        print(f"Expected at least one number, got {len(args.numbers)} instead")
-        return
 
-    for raw_number in args.numbers:
-        try:
-            number = int(raw_number)
-        except ValueError:
-            print(f"An Error Occurred: Expected an integer (5, 10, ...) got {raw_number!r} instead. Example usage: 'python python.py 10 35 812340'")
-            raise
-
+    for number in args.numbers:
         is_even(number, print_code=(not args.dont_print_code), return_func=args.return_function)
 
 
