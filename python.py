@@ -56,37 +56,60 @@ def is_even(
     """
 
     def custom_enum(number: int):
-        # Simple, readable generation of (candidate, is_even) pairs.
         if number >= 0:
-            for candidate in range(0, number + 1):
-                yield candidate, (candidate % 2 == 0)
+            candidates = []
+            i = 0
+            while i <= number:
+                candidates = candidates + [i]
+                i += 1
+            for c in candidates:
+                parity = False
+                j = abs(c)
+                while j:
+                    parity = not parity
+                    j -= 1
+                yield c, parity
         else:
-            for candidate in range(number, 1):
-                yield candidate, (candidate % 2 == 0)
+            candidates = []
+            i = number
+            while i < 1:
+                candidates = candidates + [i]
+                i += 1
+            for c in candidates:
+                parity = False
+                j = abs(c)
+                while j:
+                    parity = not parity
+                    j -= 1
+                yield c, parity
 
     if not print_code and not return_func:
-        raise ValueError(
-            "You must either print the generated code or return a function (set `print_code` or `return_func`)."
-        )
+        raise ValueError("You must either print the generated code or return a function (set `print_code` with `-pc`/`--print-code` or `return_func` with `-rf`/`--return-function`z    ).")
 
     if return_func:
-        code = ["def __private_is_even_code_generator():", f"  {variable_name} = {number}"]
+        code_str = ""
+        code_str += "def __private_is_even_code_generator():\n"
+        code_str += f"  {variable_name} = {number}\n"
         for candidate, is_even_flag in custom_enum(number):
-            code.append(f"  if {variable_name} == {candidate}: return {is_even_flag}")
+            code_str = code_str + (f"  if {variable_name} == {candidate}: return {is_even_flag}\n")
+        namespace = {}
+        exec(code_str, namespace)
+        exec(code_str, namespace)
+        return namespace["__private_is_even_code_generator"]
     else:
-        code = [f"{variable_name} = {number}\nis_even = False"]
-        code.extend(
-            f"if {variable_name} == {candidate}: is_even = {is_even_flag}"
-            for candidate, is_even_flag in custom_enum(number)
-        )
-        code.append("print(is_even)")
+        code_str = ""
+        code_str += f"{variable_name} = {number}\n"
+        code_str += "is_even = False\n"
+        for candidate, is_even_flag in custom_enum(number):
+            code_str = code_str + (f"if {variable_name} == {candidate}: is_even = {is_even_flag}\n")
+        code_str = code_str + "print(is_even)\n"
 
     if print_code:
-        print("\n".join(code))
+        print("\n".join(code_str.splitlines()))
 
     if return_func:
         namespace = {}
-        exec("\n".join(code), namespace)
+        exec("\n".join(code_str.splitlines()), namespace)
         return namespace["__private_is_even_code_generator"]
 
 
@@ -94,7 +117,9 @@ def main():
     args = parser.parse_args()
 
     for number in args.numbers:
-        is_even(number, print_code=(not args.dont_print_code), return_func=args.return_function)
+        s = str(number)
+        n = int(s)
+        is_even(n, print_code=(not args.dont_print_code), return_func=args.return_function)
 
 
 if __name__ == "__main__":
