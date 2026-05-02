@@ -278,22 +278,24 @@ Good luck have fun
 
 ```xml
 <body>
-  <call name="is even">1</call> # False
-  <print>
-    <call name="is even">2</call> # True
-  </print>
+  <comment>False</comment>
+  <call function="is even">
+    <integer>1</integer>
+  </call>
+  <output>
+    <comment>True</comment>
+    <call function="is even">
+      <integer>2</integer>
+    </call>
+  </output>
 </body>
 ```
 
 ### Execution
 
 ```bash
-$ python -m htmlish htmlish.html [--code]
+$ htmlish htmlish.html
 ```
-
-**Options**:
-
-- ` --code `: Displays the Python-equivalent of the HTMLish code
 
 [(GO TO HOME)](#table-of-contents)
 

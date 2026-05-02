@@ -1,12 +1,20 @@
-<head></head>
-<body>
-  <function name="is even">
-    <parameters>
-      <parameter name="number" type="integer"></parameter>
-    </parameters>
-    <callback>
-      <var name="is true" type="boolean"><ref name="number"/> % 2</var>
-      <return><ref name="is true"/></return>
-    </callback>
-  </function>
-</body>
+<!DOCTYPE htmlish>
+<htmlish>
+  <head></head>
+  <body>
+    <function name="is even">
+      <parameters>
+        <integer name="number"></integer>
+      </parameters>
+      <callback>
+        <mod name="is true">
+          <pointer name="number"/>
+          <integer>2</integer>
+        </mod>
+        <return>
+          <pointer name="is true"/>
+        </return>
+      </callback>
+    </function>
+  </body>
+</htmlish>
