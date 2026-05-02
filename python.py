@@ -1,5 +1,8 @@
-import sys
-from typing import Callable
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+from argparse import ArgumentParser
 
 def is_even(
     number: int,
@@ -7,7 +10,7 @@ def is_even(
     *,
     print_code: bool = True,
     return_func: bool = False,
-) -> Callable | None:
+) -> Callable[[], bool] | None:
     """
     Generates python if-else code that allows you to check if a number is even.
 
@@ -25,36 +28,42 @@ def is_even(
     Raises
     -------
     ValueError
-        When both `print_code` and `return_func` is set to `False` as the function would esentially do nothing.
+        When both `print_code` and `return_func` are set to `False` as the function would essentially do nothing.
 
     Returns
     --------
         The :class:`Callable` which you can call and returns a :class:`bool` if `return_func` is set to `True`, else `None`
     """
 
-    def custom_enum(iterable):
-        odd = True
-        for _ in iterable:
-            yield _, odd
-            odd = not odd
+    def _enumerate_odd_even(number: int):
+        start = 0
+        if number < 0:
+            stop = number - 1
+            step = -1
+        else:
+            stop = number + 1
+            step = 1
+
+        is_even_value: bool = True
+
+        for value in range(start, stop, step):
+            yield value, is_even_value
+            is_even_value = not is_even_value
 
     if not print_code and not return_func:
-        raise ValueError(
-            "You have to either print or return a function, else it esentially does nothing."
-        )
+        raise ValueError("You must either print the generated code or return a function.")
 
     if return_func:
         code = [
             "def __private_is_even_code_generator():",
             f"  {variable_name} = {number}",
         ]
-        for i, value in custom_enum(range(number + 1)):
-            ret = f"if {variable_name} == {i}: return {value}"
-            code.append(f"  {ret}")
+        for i, value in _enumerate_odd_even(number):
+            code.append(f"  if {variable_name} == {i}: return {value}")
     else:
         code = [f"{variable_name} = {number}\nis_even = False"]
-        code.extend(f"if {variable_name} == {i}: is_even = {value}" for i, value in custom_enum(range(number + 1)))
-        code.append(f"print(is_even)")
+        code.extend(f"if {variable_name} == {i}: is_even = {value}" for i, value in _enumerate_odd_even(number))
+        code.append(f"print(is_even)\n\n")
 
     if print_code:
         print("\n".join(code))
@@ -66,21 +75,17 @@ def is_even(
 
 
 def main():
-    args = sys.argv
-    if len(args) < 2 or len(args) > 2:
-        print(f"Expected 2 args, got {len(args)} instead")
-        return
-    
-    num = args[1]
-    try:
-        num = int(num)
-    except ValueError:
-        print(f"An Error Occurred: Expected an integer (5, 10, ...) got {num!r} instead. Example usage: 'python python.py 10'")
-        raise
-
-    is_even(num)
+    parser = ArgumentParser()
+    parser.add_argument(
+        "numbers",
+        nargs="+",
+        type=int,
+        help="One or more numbers to check.",
+    )
+    args = parser.parse_args()
+    for number in args.numbers:
+        is_even(number)
 
 
 if __name__ == "__main__":
     main()
-    

@@ -26,6 +26,7 @@ This is just a silly repo that consists of code generators in different language
 ```sh
 python python.py 10
 ```
+
 If you want to run the generated script, run these commands instead:
 - ```sh
   python python.py 10 > is_even.py
