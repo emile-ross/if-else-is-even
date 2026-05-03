@@ -37,7 +37,7 @@ parse_number(const char *str_number)
     }
 
     if (num < INT_MIN || num > INT_MAX) {
-        printf("Number '%s' too big for 'int' type, try a smaller number.\n", str_number);
+        printf("Number '%s' too big/small for 'int' type, try a smaller number.\n", str_number);
         exit(-1);
     }
 
