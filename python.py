@@ -1,8 +1,31 @@
-from typing import TYPE_CHECKING
+from __future__ import annotations
+
+from typing import overload, Literal, TYPE_CHECKING
 if TYPE_CHECKING:
     from collections.abc import Callable
 
-from argparse import ArgumentParser
+from argparse import ArgumentParser, RawDescriptionHelpFormatter
+
+
+@overload
+def is_even(
+    number: int,
+    variable_name: str = "x",
+    *,
+    print_code: bool = True,
+    return_func: Literal[True] = True,
+) -> Callable[[], bool]:
+    ...
+
+@overload
+def is_even(
+    number: int,
+    variable_name: str = "x",
+    *,
+    print_code: bool = True,
+    return_func: Literal[False] = False,
+) -> None:
+    ...
 
 def is_even(
     number: int,
@@ -18,8 +41,8 @@ def is_even(
     ----------
     number: :class:`int`
         The number to check.
-    variable_name: :class:`str` | `None`
-        The variable used for the code generator when comparing. If `None`, the variable name `x` is used.
+    variable_name: :class:`str`
+        The variable used for the code generator when comparing. If not set, the variable name `x` is used.
     print_code: :class:`bool`
         Whether to print the generated code. Defaults to `True`.
     return_func: :class:`bool`
@@ -55,15 +78,16 @@ def is_even(
 
     if return_func:
         code = [
-            "def __private_is_even_code_generator():",
-            f"  {variable_name} = {number}",
+            "def __private_is_even() -> bool:",
+            f"    {variable_name} = {number}",
+            f"    is_even = False\n"
         ]
-        for i, value in _enumerate_odd_even(number):
-            code.append(f"  if {variable_name} == {i}: return {value}")
+        code.extend(f"    if {variable_name} == {i}:\n        is_even = {value}" for i, value in _enumerate_odd_even(number))
+        code.append(f"    return is_even")
     else:
-        code = [f"{variable_name} = {number}\nis_even = False"]
-        code.extend(f"if {variable_name} == {i}: is_even = {value}" for i, value in _enumerate_odd_even(number))
-        code.append(f"print(is_even)\n\n")
+        code = [f"{variable_name} = {number}\nis_even = False\n"]
+        code.extend(f"if {variable_name} == {i}: \n    is_even = {value}" for i, value in _enumerate_odd_even(number))
+        code.append(f"print(is_even)\n")
 
     if print_code:
         print("\n".join(code))
@@ -71,11 +95,18 @@ def is_even(
     if return_func:
         namespace = {}
         exec("\n".join(code), namespace)
-        return namespace["__private_is_even_code_generator"]
+        return namespace["__private_is_even"]
 
 
 def main():
-    parser = ArgumentParser()
+    parser = ArgumentParser(
+    epilog="""
+Examples:
+  python python.py 10
+  python python.py -5 4
+""",
+    formatter_class=RawDescriptionHelpFormatter
+    )
     parser.add_argument(
         "numbers",
         nargs="+",

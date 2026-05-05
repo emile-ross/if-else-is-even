@@ -46,15 +46,16 @@ parse_number(const char *str_number)
 
 
 int main(int argc, char *argv[])
-{
+{   
     if (argc != 2) {
-        printf("Expected 1 argument, got %d instead.\n", argc - 2);
+        printf("Expected 1 argument, got %d instead.\n", argc - 1);
         printf("Example command: '.\\is_even 10'\n");
         return -1;
     }
 
     int num = parse_number(argv[1]);
     
+    printf("#include <stdio.h>\n\n"); // for printf
     printf("int main()\n{\n");
     print_is_even(num);
     printf("    printf(\"%%s\", is_even? \"true\" : \"false\");\n");
